@@ -1,6 +1,10 @@
 {
     "private": true,
     "dependencies": {
-        "@stdlib/stdlib": "^0.3.2"
+        "@stdlib/stdlib": "^0.3.2",
+        "parcel": "^2.14.2"
+    },
+    "scripts": {
+        "build": "parcel build script.js"
     }
 }
