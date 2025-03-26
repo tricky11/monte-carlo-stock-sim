@@ -1,4 +1,6 @@
-import { normal, lognormal, uniform } from '@stdlib/random/base';
+var lognormal = require( '@stdlib/random/base/lognormal' );
+var normal = require( '@stdlib/random/base/normal' );
+var uniform = require( '@stdlib/random/base/uniform' );
 
 const stockPrices = {
     AAPL: [170, 172, 175, 178, 180, 182, 185, 188, 190, 192, 195],
@@ -16,25 +18,17 @@ function simulateFuturePrices(stock, distribution) {
     for (let i = 0; i < 30; i++) {
         let change;
         if (distribution === 'normal') {
-            change = normal(0, 5)(); // Mean 0, Std 5
+            change = normal(0, 5); // Mean 0, Std 5
         } else if (distribution === 'lognormal') {
-            change = lognormal(0, 0.05)(); // Mean 0, Std 0.05
+            change = lognormal(0, 0.05); // Mean 0, Std 0.05
         } else if (distribution === 'uniform') {
-            change = uniform(-5, 5)(); // Random variation
+            change = uniform(-5, 5); // Random variation
         }
         lastPrice += change;
         simulatedPrices.push(lastPrice);
     }
 
     return simulatedPrices;
-}
-
-function runSimulation() {
-    const stock = document.getElementById("stock").value;
-    const distribution = document.getElementById("distribution").value;
-    const historical = stockPrices[stock];
-    const future = simulateFuturePrices(stock, distribution);
-    plotStockData(historical, future);
 }
 
 function plotStockData(historical, future) {
@@ -50,3 +44,11 @@ function plotStockData(historical, future) {
         }
     });
 }
+
+window.runSimulation = function() {
+    const stock = document.getElementById("stock").value;
+    const distribution = document.getElementById("distribution").value;
+    const historical = stockPrices[stock];
+    const future = simulateFuturePrices(stock, distribution);
+    plotStockData(historical, future);
+};
