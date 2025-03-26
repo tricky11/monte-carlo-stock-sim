@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Carlo Stock Simulator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="script.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        canvas { max-width: 800px; margin: 20px auto; }
+        select { margin: 10px; padding: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Monte Carlo Stock Price Simulation</h1>
+    <label for="stock">Select Stock:</label>
+    <select id="stock">
+        <option value="AAPL">Apple (AAPL)</option>
+        <option value="AMZN">Amazon (AMZN)</option>
+        <option value="META">Meta (META)</option>
+        <option value="GOOGL">Google (GOOGL)</option>
+        <option value="NFLX">Netflix (NFLX)</option>
+    </select>
+    
+    <label for="distribution">Select Distribution:</label>
+    <select id="distribution">
+        <option value="normal">Normal</option>
+        <option value="lognormal">Log-normal</option>
+        <option value="uniform">Uniform</option>
+    </select>
+    
+    <button onclick="runSimulation()">Simulate</button>
+    <canvas id="stockChart"></canvas>
+</body>
+</html>
