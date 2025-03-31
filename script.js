@@ -3,10 +3,7 @@ var normal = require( '@stdlib/random/base/normal' );
 var uniform = require( '@stdlib/random/base/uniform' );
 var mean = require ( '@stdlib/stats/base/mean' );
 var stdev = require ( '@stdlib/stats/base/stdev' );
-var parseJSON = require( '@stdlib/utils/parse-json' );
-var readFile = require( '@stdlib/fs/read-file' );
 
-const stockPriceCache = {};
 const distributionParamsCache = {};
 let stockChartInstance = null; // Store chart instance globally
 
