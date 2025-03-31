@@ -11,14 +11,14 @@ import aaplData from './data/AAPL.json';
 import amznData from './data/AMZN.json';
 import nflxData from './data/NFLX.json';
 import googData from './data/GOOG.json';
-import msftData from './data/META.json';
+import metaData from './data/META.json';
 
 const stockData = {
     AAPL: aaplData,
     AMZN: amznData,
     NFLX: nflxData,
     GOOG: googData,
-    MSFT: msftData,
+    META: metaData,
 
 };
 
@@ -27,7 +27,7 @@ async function fetchStockPrices(stock) {
 
     // Convert JSON data to the expected format
     return stockData[stock].map(entry => ({
-        date: new Date(entry.Date),               // Extract Date
+        date: new Date(entry.Date),     // Extract Date
         price: parseFloat(entry.Close)  // Extract and convert Close price
     }));
 }
