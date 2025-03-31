@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monte Carlo Stock Simulator</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
     <script src="dist/script.js"></script>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
@@ -31,6 +32,6 @@
     </select>
     
     <button onclick="runSimulation()">Simulate</button>
-    <canvas id="stockChart"></canvas>
+    <canvas id="stockChart" height="400px" width="800px"></canvas>
 </body>
 </html>

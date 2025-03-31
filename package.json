@@ -1,10 +1,16 @@
 {
     "private": true,
     "dependencies": {
+        "@stdlib/stats-base-mean": "^0.2.2",
         "@stdlib/stdlib": "^0.3.2",
-        "parcel": "^2.14.2"
+        "parcel": "^2.14.2",
+        "virtual-dom": "^2.1.1"
     },
     "scripts": {
         "build": "parcel build script.js"
+    },
+    "devDependencies": {
+        "buffer": "^6.0.3",
+        "events": "^3.3.0"
     }
 }
