@@ -62,11 +62,9 @@ async function simulateFuturePrices(stock, distribution) {
     const lastDate = new Date(historical[historical.length - 1].date);
     let simulatedPrices = [];
     for (let i = 1; i <= 30; i++) {
-        let simulatedReturn ;
+        let simulatedReturn = 0;
         if (distribution === 'normal') {
             simulatedReturn  = normal(params.mean, params.stdev);
-        } else if (distribution === 'lognormal') {
-            simulatedReturn  = lognormal(params.logMean, params.logStdev);
         } else if (distribution === 'uniform') {
             simulatedReturn  = uniform(params.mean - params.stdev, params.mean + params.stdev);
         }
