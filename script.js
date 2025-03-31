@@ -8,6 +8,7 @@ var readFile = require( '@stdlib/fs/read-file' );
 
 const stockPriceCache = {};
 const distributionParamsCache = {};
+let stockChartInstance = null; // Store chart instance globally
 
 import aaplData from './data/AAPL.json';
 import amznData from './data/AMZN.json';
@@ -59,28 +60,23 @@ async function simulateFuturePrices(stock, distribution) {
 
     let lastPrice = historical[historical.length - 1].price;
     const lastDate = new Date(historical[historical.length - 1].date);
-    let simulatedPricePaths = [];
-
+    let simulatedPrices = [];
     for (let i = 1; i <= 30; i++) {
-        let simulatedPrices = [];
-        for (let i = 1; i <= 30; i++) {
-            let simulatedReturn ;
-            if (distribution === 'normal') {
-                simulatedReturn  = normal(params.mean, params.stdev);
-            } else if (distribution === 'lognormal') {
-                simulatedReturn  = lognormal(params.logMean, params.logStdev);
-            } else if (distribution === 'uniform') {
-                simulatedReturn  = uniform(params.mean - params.stdev, params.mean + params.stdev);
-            }
-            lastPrice *= Math.exp(simulatedReturn);
-            
-            let futureDate = new Date(lastDate);
-            futureDate.setDate(futureDate.getDate() + i);
-            simulatedPrices.push({ date: futureDate.toISOString().split('T')[0], price: lastPrice });
+        let simulatedReturn ;
+        if (distribution === 'normal') {
+            simulatedReturn  = normal(params.mean, params.stdev);
+        } else if (distribution === 'lognormal') {
+            simulatedReturn  = lognormal(params.logMean, params.logStdev);
+        } else if (distribution === 'uniform') {
+            simulatedReturn  = uniform(params.mean - params.stdev, params.mean + params.stdev);
         }
-        simulatedPricePaths.push(simulatedPrices);
+        lastPrice *= Math.exp(simulatedReturn);
+        
+        let futureDate = new Date(lastDate);
+        futureDate.setDate(futureDate.getDate() + i);
+        simulatedPrices.push({ date: futureDate.toISOString().split('T')[0], price: lastPrice });
     }
-    plotStockData(historical, simulatedPricePaths);
+    plotStockData(historical, simulatedPrices);
 }
 
 window.runSimulation = async function() {
@@ -89,17 +85,20 @@ window.runSimulation = async function() {
     await simulateFuturePrices(stock, distribution);
 };
 
-function plotStockData(historical, futures) {
+function plotStockData(historical, future) {
     const ctx = document.getElementById('stockChart').getContext('2d');
-    const dates = [...historical.map(p => p.date), ...futures[0].map(p => p.date)];
-    console.log(dates);
+    const dates = [...historical.map(p => p.date), ...future.map(p => p.date)];
     const datasets = [
-        { label: 'Historical', data: [...historical.map(p => p.price), ...futures[0].map(p => undefined)] }        
+        { label: 'Historical', data: [...historical.map(p => p.price), ...future.map(p => undefined)] },
+        { label: 'Simulated Future', data: [...historical.map(p => undefined), ...future.map(p => p.price)] }
     ];
-    for (let i = 0; i <= futures.length; i++) {
-        datasets.push({ label: 'Simulated Future', data: [...historical.map(p => undefined), ...futures[i].map(p => p.price)] });
+    // 🔥 Destroy the existing chart if it exists
+    if (stockChartInstance) {
+        stockChartInstance.destroy();
     }
-    new Chart(ctx, {
+
+    // Create a new chart
+    stockChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: dates,
